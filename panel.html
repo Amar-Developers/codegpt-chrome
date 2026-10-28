@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code GPT</title>
+<link rel="stylesheet" href="panel.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand"><img src="icons/48.png" alt=""><span>Code GPT</span><span class="tag" id="plan-tag" hidden></span></div>
+  <div class="top-btns">
+    <button id="btn-new" class="ib" title="New chat" hidden></button>
+    <a id="btn-web" class="ib" title="Open this chat on the website" target="_blank" hidden></a>
+    <button id="btn-settings" class="ib" title="Settings"></button>
+  </div>
+</header>
+
+<section id="view-connect" class="view center" hidden>
+  <img class="hero-logo" src="icons/128.png" alt="">
+  <h1>Code GPT for Chrome</h1>
+  <p class="muted small" style="max-width:290px;margin:0">Ask about any page, or let the browser agent do the work for you.</p>
+  <ul class="feat">
+    <li id="f1"><div><b>Browser agent</b><br>Replies to emails, fills in forms, collects data across tabs.</div></li>
+    <li id="f2"><div><b>You stay in control</b><br>It asks before anything important and never types passwords.</div></li>
+    <li id="f3"><div><b>Your account</b><br>Uses your Code GPT chats, memory and plan.</div></li>
+  </ul>
+  <button id="btn-connect" class="btn primary wide">Connect your account</button>
+  <p class="small muted">No account yet? <a id="link-signup" target="_blank">Create one free</a></p>
+</section>
+
+<section id="view-chat" class="view chat" hidden>
+  <div id="thread" class="thread">
+    <div id="welcome" class="welcome">
+      <h2 id="hello">Hello</h2>
+      <p class="muted">What should I do for you?</p>
+      <div class="cards" id="cards"></div>
+      <div class="sub-h">Or just ask</div>
+      <div class="chips" id="quick"></div>
+    </div>
+  </div>
+  <div id="runbar" class="runbar" hidden><span class="spin"></span><span class="rtxt" id="runtxt">Working…</span><button type="button" class="btn" id="runstop">Stop</button></div>
+  <form id="composer" class="composer">
+    <div id="menu-host"></div>
+    <div id="ctx-chips" class="ctx-chips"></div>
+    <textarea id="prompt" rows="1" placeholder="Ask Code GPT, or tell it what to do…"></textarea>
+    <div class="bar">
+      <div class="seg" id="mode-seg"><button type="button" data-m="chat" id="m-chat"></button><button type="button" data-m="agent" id="m-agent"></button></div>
+      <button type="button" id="t-perm" class="pillb" title="How much Code GPT may do without asking"></button>
+      <button type="button" id="t-page" class="pillb" title="Send the text of this page with your message"></button>
+      <button type="button" id="t-shot" class="pillb" title="Send a picture of what you see on the screen"></button>
+      <button type="button" id="t-web" class="pillb" title="Let Code GPT search the web"></button>
+      <span class="grow"></span>
+      <button type="button" id="t-model" class="pillb" title="Choose the AI model"></button>
+      <button type="submit" id="send" class="send" title="Send"></button>
+      <button type="button" id="stop" class="send stop" title="Stop" hidden></button>
+    </div>
+  </form>
+  <div class="meter" id="meter" hidden></div>
+</section>
+
+<section id="view-settings" class="view settings" hidden>
+  <h2>Settings</h2>
+  <div class="scard" id="acct"></div>
+  <div class="scard" id="agent-card">
+    <h3 id="h-agent">Browser agent</h3>
+    <p class="small muted">How much Code GPT may do on its own when you give it a task.</p>
+    <div class="opts" id="perm-opts"></div>
+    <h3 style="margin-top:14px" id="h-sites">Trusted sites</h3>
+    <p class="small muted">On these sites, “Act on trusted sites” starts without asking for a plan first. Risky actions still ask.</p>
+    <div class="sitelist" id="sitelist"></div>
+    <div class="row"><input id="site-in" placeholder="example.com"><button type="button" class="btn small" id="site-add" style="flex:0 0 auto">Add</button></div>
+    <h3 style="margin-top:14px" id="h-access">Website access</h3>
+    <p class="small muted" id="access-note"></p>
+    <div class="row"><button type="button" class="btn small" id="btn-allsites"></button></div>
+    <h3 style="margin-top:14px" id="h-screen">Looking at the screen</h3>
+    <div class="seg" id="shot-seg" style="margin-top:4px"><button type="button" data-s="auto">Automatic</button><button type="button" data-s="always">Every step</button><button type="button" data-s="never">Never</button></div>
+    <p class="small muted" style="margin-top:6px">Automatic sends a picture when the page is hard to read as text. “Never” uses text only (cheaper, but weaker on pictures and canvas pages).</p>
+  </div>
+  <div class="scard" id="short-card">
+    <h3 id="h-short">Shortcuts</h3>
+    <p class="small muted">Saved tasks. Type <kbd>/</kbd> in the message box to use them.</p>
+    <div class="sitelist" id="shortlist"></div>
+    <details><summary class="small" style="color:var(--accent-dark)">Add a shortcut</summary>
+      <input id="sc-name" placeholder="Name, e.g. Weekly report" style="margin-top:8px">
+      <textarea id="sc-text" class="field" rows="3" placeholder="What should Code GPT do?" style="margin-top:6px"></textarea>
+      <div class="row"><button type="button" class="btn small primary" id="sc-add">Save shortcut</button></div>
+    </details>
+  </div>
+  <div class="scard">
+    <h3 id="h-look">Look</h3>
+    <div class="seg" id="theme-seg"><button type="button" data-t="auto">Device</button><button type="button" data-t="light">Light</button><button type="button" data-t="dark">Dark</button></div>
+    <p class="small muted" style="margin-top:10px">Open Code GPT with <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>G</kbd>, stop the agent with <kbd>Alt</kbd> + <kbd>Shift</kbd> + <kbd>S</kbd>. Change them at chrome://extensions/shortcuts.</p>
+  </div>
+  <details class="scard">
+    <summary><b>Paste a key</b></summary>
+    <p class="small muted">If connecting did not work, open the connect page, copy your key and paste it here.</p>
+    <input id="key-in" placeholder="cgx_…" autocomplete="off" style="margin-top:6px">
+    <details class="adv"><summary class="small muted" style="margin-top:6px">Server address</summary><input id="base-in" placeholder="https://chat.codegpt.it.com" style="margin-top:6px"></details>
+    <div class="row"><button type="button" id="btn-key" class="btn small">Save key</button></div>
+  </details>
+  <div class="row between">
+    <button id="btn-back" class="btn">Back</button>
+    <button id="btn-logout" class="btn danger">Disconnect</button>
+  </div>
+  <p class="small muted center" style="margin-top:14px">Code GPT for Chrome <span id="ver"></span> · by AMAR Developers · <a href="https://codegpt.it.com/privacy" target="_blank">Privacy</a> · <a href="https://codegpt.it.com/chrome" target="_blank">What it can do</a></p>
+</section>
+<div id="toast" class="toast" hidden></div>
+<script src="lib/marked.min.js"></script>
+<script src="lib/purify.min.js"></script>
+<script src="icons.js"></script>
+<script src="agent/loop.js"></script>
+<script src="agent/runui.js"></script>
+<script src="panel.js"></script>
+</body>
+</html>

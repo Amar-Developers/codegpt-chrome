@@ -1,0 +1,6 @@
+Copyright (c) 2026 AMAR Developers. All rights reserved.
+
+This source code is published so people can see how it works and check what it sends.
+It may be used free of charge together with a Code GPT account (https://codegpt.it.com).
+Redistribution or modified versions are not allowed without written permission from AMAR Developers.
+Bug reports and suggestions are welcome: https://chat.codegpt.it.com/forum
